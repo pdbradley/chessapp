@@ -10,7 +10,7 @@
       <br/>
       <h4>Started At: <%= game.created_at.strftime("%m-%d-%y") %></h4>
       <br/>
-      <h4>Opponent: <%= game.user.username %></h4>
+      <h4>Opponent: <%= game.white_player.username %></h4>
       <div>
         <a class="button round"<%= link_to 'JOIN GAME', games_path %></a>
       </div>

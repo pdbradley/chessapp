@@ -7,52 +7,56 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find_by(id: params[:id])
+    @pieces = @game.pieces
   end
 
-  def new
-    @game = Game.new
-    @pieces = [
-      { type: "pawn", color: "white", x: 0, y: 1 },
-      { type: "pawn", color: "white", x: 1, y: 1 },
-      { type: "pawn", color: "white", x: 2, y: 1 },
-      { type: "pawn", color: "white", x: 3, y: 1 },
-      { type: "pawn", color: "white", x: 4, y: 1 },
-      { type: "pawn", color: "white", x: 5, y: 1 },
-      { type: "pawn", color: "white", x: 6, y: 1 },
-      { type: "pawn", color: "white", x: 7, y: 1 },
-      { type: "rook", color: "white", x: 0, y: 0 },
-      { type: "rook", color: "white", x: 7, y: 0 },
-      { type: "knight", color: "white", x: 1, y: 0 },
-      { type: "knight", color: "white", x: 6, y: 0 },
-      { type: "bishop", color: "white", x: 2, y: 0 },
-      { type: "bishop", color: "white", x: 5, y: 0 },
-      { type: "king", color: "white", x: 4, y: 0 },
-      { type: "queen", color: "white", x: 3, y: 0 },
-      { type: "pawn", color: "black", x: 0, y: 6 },
-      { type: "pawn", color: "black", x: 1, y: 6 },
-      { type: "pawn", color: "black", x: 2, y: 6 },
-      { type: "pawn", color: "black", x: 3, y: 6 },
-      { type: "pawn", color: "black", x: 4, y: 6 },
-      { type: "pawn", color: "black", x: 5, y: 6 },
-      { type: "pawn", color: "black", x: 6, y: 6 },
-      { type: "pawn", color: "black", x: 7, y: 6 },
-      { type: "rook", color: "black", x: 7, y: 7 },
-      { type: "rook", color: "black", x: 0, y: 7 },
-      { type: "knight", color: "black", x: 1, y: 7 },
-      { type: "knight", color: "black", x: 6, y: 7 },
-      { type: "bishop", color: "black", x: 2, y: 7 },
-      { type: "bishop", color: "black", x: 5, y: 7 },
-      { type: "king", color: "black", x: 4, y: 7 },
-      { type: "queen", color: "black", x: 3, y: 7 },
-    ]
-  end
 
   def create
-    @game = Game.new(game_params)
+    @game = Game.new(game_status: :open, white_player: current_user)
+    @piece_params_hashes = [
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 0, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 1, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 2, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 3, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 4, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 5, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 6, current_position_y: 1 },
+      { piece_type: "Pawn", piece_color: "white", current_position_x: 7, current_position_y: 1 },
+      { piece_type: "Rook", piece_color: "white", current_position_x: 0, current_position_y: 0 },
+      { piece_type: "Rook", piece_color: "white", current_position_x: 7, current_position_y: 0 },
+      { piece_type: "Knight", piece_color: "white", current_position_x: 1, current_position_y: 0 },
+      { piece_type: "Knight", piece_color: "white", current_position_x: 6, current_position_y: 0 },
+      { piece_type: "Bishop", piece_color: "white", current_position_x: 2, current_position_y: 0 },
+      { piece_type: "Bishop", piece_color: "white", current_position_x: 5, current_position_y: 0 },
+      { piece_type: "King", piece_color: "white", current_position_x: 4, current_position_y: 0 },
+      { piece_type: "Queen", piece_color: "white", current_position_x: 3, current_position_y: 0 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 0, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 1, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 2, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 3, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 4, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 5, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 6, current_position_y: 6 },
+      { piece_type: "Pawn", piece_color: "black", current_position_x: 7, current_position_y: 6 },
+      { piece_type: "Rook", piece_color: "black", current_position_x: 7, current_position_y: 7 },
+      { piece_type: "Rook", piece_color: "black", current_position_x: 0, current_position_y: 7 },
+      { piece_type: "Knight", piece_color: "black", current_position_x: 1, current_position_y: 7 },
+      { piece_type: "Knight", piece_color: "black", current_position_x: 6, current_position_y: 7 },
+      { piece_type: "Bishop", piece_color: "black", current_position_x: 2, current_position_y: 7 },
+      { piece_type: "Bishop", piece_color: "black", current_position_x: 5, current_position_y: 7 },
+      { piece_type: "King", piece_color: "black", current_position_x: 4, current_position_y: 7 },
+      { piece_type: "Queen", piece_color: "black", current_position_x: 3, current_position_y: 7 },
+    ]
 
     if @game.save
-      render :show, status: :created
-      #redirect_to @game, notice: 'Game was successfully created.'
+      @piece_params_hashes.each do |piece_params|
+        piece_params[:user] = current_user
+        @game.pieces << Piece.create(piece_params)
+      end
+
+
+      # render :show, status: :created
+      redirect_to @game, notice: 'Game was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end

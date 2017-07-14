@@ -1,2 +1,20 @@
 Show page, user is logged in to see their games?
 /games/:id
+<table cellspacing="0" cellpadding="0" class="chessboard">
+  <% 7.downto(0) do |row| %>
+    <tr>
+      <% 0.upto(7) do |col| %>
+        <td class="text-center">
+          <%=
+            if (piece = piece_at_location(@pieces, row, col))
+              color = piece.piece_color
+              type = piece.piece_type.downcase
+              image_tag("#{color}-#{type}.svg")
+            else
+            end
+          %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
