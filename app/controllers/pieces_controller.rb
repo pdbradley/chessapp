@@ -15,10 +15,11 @@ class PiecesController < ApplicationController
   end
 
   def update
-    piece = Piece.find(params[:id])
-    @game = piece.game
-    piece.update_attributes(piece_params)
-    redirect_to game_path(@game)
+    binding.pry
+    # piece = Piece.find(params[:id])
+    # @game = piece.game
+    # piece.update_attributes(piece_params)
+    # redirect_to game_path(@game)
   end
 
   private
