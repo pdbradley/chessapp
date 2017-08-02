@@ -15,9 +15,17 @@ class PiecesController < ApplicationController
   end
 
   def update
-    binding.pry
-    # piece = Piece.find(params[:id])
-    # @game = piece.game
+    @piece = Piece.find(params[:id])
+    row = params[:row].to_i
+    column = params[:column].to_i
+
+    if @piece.valid_move?(column, row)
+      @piece.current_position_x = column
+      @piece.current_position_y = row
+      @piece.save
+    end
+
+
     # piece.update_attributes(piece_params)
     # redirect_to game_path(@game)
   end

@@ -15,9 +15,29 @@ class Piece < ApplicationRecord
 
   # VALID_MOVE METHOD
 
-  def valid_move?(destination_x, destination_y)
-    destination_x.between?(0, 7) && destination_y.between?(0, 7) &&
+  def my_turn?
+    true
+    # true if it is my turn in the game
+  end
+
+  def not_occupied_by_me?(destination_x, destination_y)
+    # is there a piece at this place of the same color as self
+    game.pieces.where(piece_color: self.piece_color, current_position_x: destination_x, current_position_y: destination_y).empty?
+  end
+
+  def on_the_board?(destination_x, destination_y)
+    destination_x.between?(0, 7) && destination_y.between?(0, 7)
+  end
+
+  def is_move_possible?(destination_x, destination_y)
     is_move_blocked(destination_x, destination_y) == false
+  end
+
+  def valid_move?(destination_x, destination_y)
+    my_turn? &&
+    not_occupied_by_me?(destination_x, destination_y) &&
+    on_the_board?(destination_x, destination_y) &&
+    is_move_possible?(destination_x, destination_y)
   end
 
   # MOVE_BLOCKED METHODS

@@ -11,14 +11,17 @@
       <% 0.upto(7) do |col| %>
         <td class="text-center" data-column="<%=col%>" data-row="<%=row%>">
           <%=
+            
             if (props = piece_at_location?(@pieces, row, col))
               color = props[0]
               id = props[2]
               type = props[1].downcase
               if props[3] == :selected
+                binding.pry
                 color = "red"
               else
-                link_to image_tag("#{color}-#{type}.svg", border: 0, class: 'piece', data: {id: id}), {action: 'update', controller: 'pieces', id: id}, method: :put
+                #"#{color}-#{type}"
+                 link_to image_tag("#{color}-#{type}.svg", border: 0, class: 'piece', data: {id: id}), {action: 'update', controller: 'pieces', id: id}, method: :put
               end
             end
           %>
@@ -56,8 +59,11 @@
       console.log(game_id);
       console.log(piece_id);
 
-      $.post('/pieces/' + piece_id, {_method: 'put'});
+      $.post('/pieces/' + piece_id,
+          {game_id: game_id, row: row, column: column, _method: 'put'}
+          );
 
+      location.reload();
     }
   });
 
