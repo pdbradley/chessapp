@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
+
+  describe '#possible moves' do
+    user = User.create
+    game = Game.create(white_player_id: user.id)
+    binding.pry
+  end
+
+
+
+
+
+
+
+
+
+
   it 'has valid factory' do
     expect { FactoryGirl.create(:piece) }.to change { Piece.count }
   end
@@ -383,6 +399,7 @@ describe 'upper right to bottom left - edge case - piece on destination position
     expect(bishop1.is_move_blocked(dest_x,dest_y)).to be false
   end
 end
+
 
 describe 'piece NOT obstructed' do
     #one piece in each corner

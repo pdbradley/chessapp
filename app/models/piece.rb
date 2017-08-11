@@ -89,4 +89,8 @@ class Piece < ApplicationRecord
       return is_diagonal_move_blocked(destination_x, destination_y)
     end
   end
+
+  def possible_moves
+    #returns a list of x y coordinates that are valid for the given piece
+  end
 end
