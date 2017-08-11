@@ -4,6 +4,7 @@ FactoryGirl.define do
     password_confirmation "secretPassword"
     first_name "John"
     sequence(:username) { |n| "chessmaster#{n}" }
+    sequence(:email) { |n| "chessmaster#{n}@nowhere.com" }
   end
 
   factory :white_player, parent: :user do

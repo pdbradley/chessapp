@@ -2,20 +2,26 @@ class Pawn < Piece
   # PAWNS MOVE ONE OR TWO SQUARES FORWARD ON FIRST MOVE
   # OTHERWISE CAN ONLY MOVE ONE SQUARE FORWARD
   def valid_move?(destination_x, destination_y)
+    # byebug if (destination_x == 2 && destination_y == 2)
     return false if super(destination_x, destination_y) == false
     case
     when self.first_move == "first_move_white"
-      (destination_y - self.current_y).between?(1, 2)
+      (destination_y - self.current_y).between?(1, 2) &&
+        (destination_x == self.current_x)
     when self.first_move == "first_move_black"
-      (self.current_y - destination_y).between?(1, 2)
+      (self.current_y - destination_y).between?(1, 2) &&
+        (destination_x == self.current_x)
     when self.piece_color == "white"
-      destination_y - self.current_y == 1
+      (destination_y - self.current_y == 1) &&
+        (destination_x == self.current_x)
     when self.piece_color == "black"
-      self.current_y - destination_y == 1 
+      (self.current_y - destination_y == 1) && 
+        (destination_x == self.current_x)
     else
       false
     end
   end
+
 
   def first_move
     return "first_move_white" if self.piece_color == "white" && self.current_y == 1

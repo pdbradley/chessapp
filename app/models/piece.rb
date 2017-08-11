@@ -18,6 +18,13 @@ class Piece < ApplicationRecord
     self.created_at != self.updated_at
   end
 
+  def possible_moves
+    #returns a list of x y coordinates that are valid moves for the given piece
+    GameBoard.all_spaces.select do |x_y_pair|
+      valid_move?(x_y_pair[0], x_y_pair[1])
+    end
+  end
+
   # MOVE_PIECE
 
   def move_piece(destination_x, destination_y)
@@ -30,6 +37,10 @@ class Piece < ApplicationRecord
         if game.check == true
           raise ActiveRecord::Rollback, 'Move forbidden, as it exposes your king to check'
         end
+        if game.checkmate == true
+          # set game status?
+        end
+        self.game.turn_change
       end
     end
   end
@@ -90,7 +101,4 @@ class Piece < ApplicationRecord
     end
   end
 
-  def possible_moves
-    #returns a list of x y coordinates that are valid for the given piece
-  end
 end

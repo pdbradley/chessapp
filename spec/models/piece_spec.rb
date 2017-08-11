@@ -3,9 +3,29 @@ require 'rails_helper'
 RSpec.describe Piece, type: :model do
 
   describe '#possible moves' do
-    user = User.create
-    game = Game.create(white_player_id: user.id)
-    binding.pry
+    it 'predicts the moves for the rightmost  white rook' do
+      user = FactoryGirl.create(:user)
+      game = Game.create(white_player_id: user.id)
+
+      rook = game.pieces.where(current_x: 7, current_y: 0).first
+      expect(rook.possible_moves).to match_array []
+    end
+    it 'predicts the moves for the rightmost white rook when pawn is removed' do
+      user = FactoryGirl.create(:user)
+      game = Game.create(white_player_id: user.id)
+      #kill pawn
+      game.pieces.where(current_x: 7, current_y: 1).first.destroy
+
+      rook = game.pieces.where(current_x: 7, current_y: 0).first
+      expect(rook.possible_moves).to match_array [[[7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7]]]
+    end
+    it 'predicts the moves for the leftmost white pawn' do
+      user = FactoryGirl.create(:user)
+      game = Game.create(white_player_id: user.id)
+
+      pawn = game.pieces.where(current_x: 0, current_y: 1).first
+      expect(pawn.possible_moves).to match_array [[0,2], [0,3]]
+    end
   end
 
 
@@ -170,11 +190,11 @@ RSpec.describe Piece, type: :model do
       let!(:king1) { FactoryGirl.create(:king, current_x: 0, current_y: 0) }
       let!(:king2) { FactoryGirl.create(:king, current_x: 7, current_y: 7) }
       let(:current_x_king1) { 0 }
+      let(:current_y_king1) { 0 }
       let(:current_x_king2) { 7 }
+      let(:current_y_king2) { 7 }
       let(:dest_x_offboard_right) { 8 }
       let(:dest_x_offboard_left) { -1 }
-      let(:current_y_king1) { 0 }
-      let(:current_y_king2) { 7 }
       let(:dest_y_offboard_top) { 8 }
       let(:dest_y_offboard_bottom) { -1 }
 
@@ -192,6 +212,11 @@ RSpec.describe Piece, type: :model do
 
       it "should be false for off board move to bottom" do
         expect(king1.valid_move?(current_x_king1, dest_y_offboard_bottom)).to be false
+      end
+
+      it "should only let a pawn make a legal move" do
+        pawn = FactoryGirl.create(:pawn, current_x: 0, current_y: 0)
+        expect(pawn.valid_move?(2,2)).to be false
       end
     end
   end

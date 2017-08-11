@@ -7,6 +7,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'database_cleaner'
 require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -30,6 +31,17 @@ require 'devise'
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 
   config.include Devise::Test::ControllerHelpers, :type => :controller
   config.include FactoryGirl::Syntax::Methods

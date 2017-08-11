@@ -100,6 +100,26 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  # CHECKMATE METHOD
+  #.......K
+  #........
+  #.......Q
+  #........
+  #........
+  #........
+  #........
+  #........
+  describe "#king_taken_next_move?" do
+    it "king is exposed to be taken"
+      game = FactoryGirl.create(:game, :no_pieces)
+      black_king = Piece.create(piece_type: 'King', piece_color: 'black', game_id: game.id,
+                          user_id: game.black_player_id, current_x: 7, current_y: 7)
+      white_queen = Piece.create(piece_type: 'Queen', piece_color: 'white', game_id: game.id, user_id: game.white_player_id, current_x: 7, current_y: 5)
+
+      expect(game.king_taken_next_move?).to eq(true)
+    end
+
+  end
   # STALEMATE METHOD
   # describe "#stalemate?" do
   #   it "should return true" do

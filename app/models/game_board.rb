@@ -13,7 +13,18 @@ class GameBoard
     end
   end
 
+  def self.all_spaces
+    result = Array.new
+    (0..7).each do |x|
+      (0..7).each do |y|
+        result << [x,y]
+      end
+    end
+    result
+  end
+
   def self.make_board(game)
+    puts "Make board"
     make_rook(game)
     make_knight(game)
     make_bishop(game)
@@ -24,7 +35,7 @@ class GameBoard
 
   def self.make_rook(game)
     [{ x: 0, y: 0 }, { x: 7, y: 0 }].each do |position|
-      Piece.create(piece_type: "Rook", piece_color: "white", 
+      p = Piece.create!(piece_type: "Rook", piece_color: "white", 
         current_x: position[:x], current_y: position[:y], 
         user_id: game.white_player_id, game_id: game.id)
     end
